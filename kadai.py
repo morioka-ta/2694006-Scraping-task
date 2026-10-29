@@ -10,6 +10,9 @@ url_list = [url]
 # URLをキー、ページタイトルを値として保存する辞書
 site_map = {}
 
+# 保存するページ数の上限
+max_pages = 50
+
 # url_listに新しいURLを追加すると、順番に巡回できる
 for url in url_list:
     # 連続アクセスを避ける
@@ -37,6 +40,10 @@ for url in url_list:
     if title is not None:
         site_map[url] = title.text.strip()
         print('タイトル：', title.text.strip())
+
+    # 50件に達したら、追加のリンクは探さず終了する
+    if len(site_map) >= max_pages:
+        break
 
     # <a>タグのリンク先をすべて調べる
     a_list = html_soup.find_all('a')
